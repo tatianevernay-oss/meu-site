@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroLÍDER — Programa de Mentoria Comportamental · Tatiane Vernay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:  #0A0A0A;
+  --gold:   #C9A84C;
+  --gold-l: #E8C96A;
+  --gold-d: #9A7830;
+  --white:  #FFFFFF;
+  --cream:  #F5F4F0;
+  --muted:  #5A5A4A;
+  --card:   #111111;
+  --card2:  #161616;
+  --border: rgba(201,168,76,0.15);
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --sans:   'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Noise */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.3;
+}
+
+/* ── Reveal ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; } .d4 { transition-delay: 0.4s; }
+
+/* ── Type ── */
+h1,h2,h3,h4 { font-family: var(--serif); font-weight: 600; line-height: 1.1; }
+.gold { color: var(--gold); }
+.cream { color: var(--cream); }
+.muted { color: var(--muted); }
+
+/* ── Label ── */
+.label {
+  font-family: var(--sans);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 18px;
+  display: block;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px; width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent);
+  margin: 0;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--gold); color: var(--black);
+  font-family: var(--sans); font-size: 14px;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 20px 48px; border: none; cursor: pointer;
+  text-decoration: none; position: relative; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--gold-l); transform: translateX(-101%);
+  transition: transform 0.4s ease;
+}
+.btn:hover::before { transform: translateX(0); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(201,168,76,0.3); }
+.btn span { position: relative; z-index: 1; }
+.btn-full { width: 100%; justify-content: center; font-size: 16px; padding: 22px 48px; }
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 140px 24px 100px;
+  position: relative; overflow: hidden;
+}
+
+/* Anéis */
+.ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.06);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.r1 { width: 500px; height: 500px; }
+.r2 { width: 800px; height: 800px; }
+.r3 { width: 1150px; height: 1150px; border-color: rgba(201,168,76,0.03); }
+
+/* Glow */
+.hero-glow {
+  position: absolute; top: 40%; left: 50%; transform: translate(-50%,-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.055) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Badge pré-venda */
+.prevenda-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1px solid rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.06);
+  padding: 8px 20px; margin-bottom: 36px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
+  opacity: 0; animation: fadeUp 0.8s 0.1s forwards;
+}
+.badge-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gold);
+  animation: pulse-dot 1.6s infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.7); }
+}
+
+.hero-eyebrow {
+  font-family: var(--serif); font-size: clamp(16px,2vw,20px);
+  font-style: italic; color: var(--muted); margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.8s 0.25s forwards;
+}
+
+.hero-title {
+  font-size: clamp(52px,8vw,100px);
+  font-weight: 700; line-height: 1.0;
+  margin-bottom: 28px; position: relative;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-title .line2 { color: var(--gold); font-style: italic; }
+
+.hero-sub {
+  font-size: clamp(16px,2vw,20px); font-weight: 300;
+  color: var(--cream); max-width: 680px; margin: 0 auto 20px;
+  opacity: 0; animation: fadeUp 0.8s 0.55s forwards;
+}
+
+.hero-tese {
+  font-family: var(--serif); font-size: clamp(14px,1.6vw,17px);
+  font-style: italic; color: var(--muted);
+  max-width: 560px; margin: 0 auto 56px;
+  opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+}
+
+.hero-cta {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+}
+
+.hero-price-hint {
+  font-size: 13px; color: var(--muted); letter-spacing: 0.04em;
+}
+.hero-price-hint strong { color: var(--gold); }
+
+.hero-bottom-line {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+}
+
+/* ══════════════════════════════════════
+   NÚMEROS
+══════════════════════════════════════ */
+.section-numeros {
+  padding: 80px 24px;
+  background: var(--card);
+}
+.numeros-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 2px;
+}
+@media(max-width:640px){ .numeros-inner { grid-template-columns: repeat(2,1fr); } }
+
+.numero-item {
+  padding: 40px 28px; text-align: center;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  transition: border-color 0.3s;
+}
+.numero-item:hover { border-color: rgba(201,168,76,0.4); }
+.numero-val {
+  font-family: var(--serif); font-size: 48px;
+  font-weight: 700; color: var(--gold); line-height: 1;
+  margin-bottom: 8px;
+}
+.numero-label {
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+}
+
+/* ══════════════════════════════════════
+   DOR
+══════════════════════════════════════ */
+.section-dor {
+  padding: 120px 24px;
+  max-width: 960px; margin: 0 auto;
+}
+.dor-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  margin-top: 56px;
+}
+@media(max-width:640px){ .dor-grid { grid-template-columns: 1fr; } }
+
+.dor-card {
+  padding: 32px 28px;
+  border: 1px solid var(--border); background: var(--card);
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s;
+}
+.dor-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.dor-card:hover::before { transform: scaleX(1); }
+.dor-card:hover { border-color: rgba(201,168,76,0.35); }
+
+.dor-quote {
+  font-family: var(--serif); font-size: 17px;
+  font-style: italic; color: var(--cream); line-height: 1.55;
+  margin-bottom: 14px;
+}
+.dor-quote::before {
+  content: '"'; color: var(--gold); font-size: 28px;
+  line-height: 0; vertical-align: -10px; margin-right: 3px;
+}
+.dor-tag {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-d);
+}
+
+/* ══════════════════════════════════════
+   ÂNCORA
+══════════════════════════════════════ */
+.section-ancora {
+  padding: 100px 24px; text-align: center;
+  background: linear-gradient(180deg, #0A0A0A 0%, #0E0D09 50%, #0A0A0A 100%);
+  position: relative; overflow: hidden;
+}
+.ancora-glow {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 700px; height: 400px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ancora-title {
+  font-family: var(--serif); font-size: clamp(28px,4.5vw,56px);
+  font-weight: 500; line-height: 1.2; max-width: 820px;
+  margin: 0 auto 20px; position: relative;
+}
+.ancora-sub {
+  font-size: 15px; color: var(--muted); font-style: italic; position: relative;
+}
+
+/* ══════════════════════════════════════
+   O PROGRAMA
+══════════════════════════════════════ */
+.section-programa {
+  padding: 120px 24px;
+  max-width: 1100px; margin: 0 auto;
+}
+.programa-header { text-align: center; margin-bottom: 72px; }
+.programa-title { font-size: clamp(34px,4.5vw,54px); margin-bottom: 16px; }
+.programa-sub {
+  font-size: 17px; color: var(--cream); font-weight: 300;
+  max-width: 600px; margin: 0 auto;
+}
+
+/* Pilares CLARO */
+.pilares-grid {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 2px;
+  margin-bottom: 80px;
+}
+@media(max-width:900px){ .pilares-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:500px){ .pilares-grid { grid-template-columns: 1fr; } }
+
+.pilar-card {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 36px 24px; text-align: center;
+  position: relative; overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.pilar-card:hover { transform: translateY(-5px); }
+.pilar-card::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.pilar-card:hover::after { opacity: 1; }
+
+.pilar-letter {
+  width: 54px; height: 54px;
+  background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 26px; font-weight: 700;
+  color: var(--black); margin: 0 auto 18px;
+}
+.pilar-name { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+.pilar-num {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 12px;
+}
+.pilar-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* Formato */
+.formato-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+@media(max-width:640px){ .formato-grid { grid-template-columns: 1fr; } }
+
+.formato-card {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 40px 36px; position: relative; overflow: hidden;
+}
+.formato-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; bottom: 0; width: 3px;
+  background: var(--gold); transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+.formato-card:hover::before { transform: scaleY(1); }
+
+.formato-icon { font-size: 28px; margin-bottom: 18px; }
+.formato-title { font-size: 20px; margin-bottom: 10px; }
+.formato-desc { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+/* ══════════════════════════════════════
+   PARA QUEM É
+══════════════════════════════════════ */
+.section-paraquem {
+  padding: 120px 24px;
+  background: #080808;
+}
+.paraquem-inner { max-width: 1080px; margin: 0 auto; }
+.paraquem-header { text-align: center; margin-bottom: 64px; }
+.paraquem-title { font-size: clamp(32px,4vw,48px); margin-bottom: 12px; }
+
+.paraquem-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+}
+@media(max-width:768px){ .paraquem-grid { grid-template-columns: 1fr; } }
+
+.avatar-card {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 40px 32px; position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.avatar-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-4px); }
+.avatar-num {
+  font-family: var(--serif); font-size: 64px;
+  font-weight: 700; color: rgba(201,168,76,0.1); line-height: 1; margin-bottom: -4px;
+}
+.avatar-title { font-size: 20px; color: var(--gold); margin-bottom: 14px; }
+.avatar-desc { font-size: 15px; color: var(--cream); font-weight: 300; line-height: 1.7; margin-bottom: 18px; }
+.avatar-frase {
+  font-family: var(--serif); font-size: 14px;
+  font-style: italic; color: var(--muted);
+  padding-left: 14px; border-left: 2px solid var(--gold); line-height: 1.5;
+}
+
+/* ══════════════════════════════════════
+   ILHA DO PARAÍSO
+══════════════════════════════════════ */
+.section-ilha {
+  padding: 120px 24px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.ilha-glow {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.055) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ilha-inner { max-width: 900px; margin: 0 auto; position: relative; }
+.ilha-title { font-size: clamp(32px,4.5vw,54px); margin-bottom: 20px; }
+.ilha-sub {
+  font-size: 17px; color: var(--cream); font-weight: 300;
+  margin-bottom: 64px; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+
+.resultados-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 2px;
+  text-align: left;
+}
+@media(max-width:600px){ .resultados-grid { grid-template-columns: 1fr; } }
+
+.resultado-item {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 28px 24px;
+  background: var(--card); border: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+.resultado-item:hover { border-color: rgba(201,168,76,0.35); }
+.resultado-check {
+  width: 28px; height: 28px; min-width: 28px;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--gold); margin-top: 2px;
+}
+.resultado-text { font-size: 15px; color: var(--cream); line-height: 1.6; }
+
+/* ══════════════════════════════════════
+   TATIANE
+══════════════════════════════════════ */
+.section-tatiane {
+  padding: 120px 24px;
+  max-width: 1020px; margin: 0 auto;
+}
+.tatiane-inner {
+  display: grid; grid-template-columns: 360px 1fr; gap: 80px; align-items: center;
+}
+@media(max-width:800px){ .tatiane-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+.tatiane-foto {
+  aspect-ratio: 3/4; background: var(--card);
+  border: 1px solid var(--border); position: relative;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.tatiane-foto::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-l), var(--gold));
+}
+.tatiane-initials {
+  font-family: var(--serif); font-size: 90px;
+  font-weight: 700; color: rgba(201,168,76,0.2); line-height: 1;
+}
+.tatiane-foto-label {
+  position: absolute; bottom: 20px;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted);
+}
+.corner {
+  position: absolute; bottom: -14px; right: -14px;
+  width: 70px; height: 70px;
+  border-right: 2px solid var(--gold); border-bottom: 2px solid var(--gold);
+}
+
+.tatiane-nome { font-size: clamp(32px,4vw,48px); margin-bottom: 6px; }
+.tatiane-cargo {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 28px;
+}
+.tatiane-bio {
+  font-size: 16px; color: var(--cream); font-weight: 300;
+  line-height: 1.8; margin-bottom: 32px;
+}
+.creds { display: flex; flex-direction: column; gap: 10px; }
+.cred {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; color: var(--muted);
+}
+.cred::before { content: ''; width: 20px; height: 1px; background: var(--gold); flex-shrink: 0; }
+
+/* ══════════════════════════════════════
+   OFERTA / PREÇO
+══════════════════════════════════════ */
+.section-oferta {
+  padding: 120px 24px;
+  background: var(--card); position: relative; overflow: hidden;
+}
+.oferta-glow {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.oferta-inner {
+  max-width: 740px; margin: 0 auto;
+  text-align: center; position: relative;
+}
+.oferta-title { font-size: clamp(30px,4vw,48px); margin-bottom: 16px; }
+.oferta-sub {
+  font-size: 17px; color: var(--cream); font-weight: 300;
+  line-height: 1.7; margin-bottom: 56px;
+}
+
+.oferta-box {
+  background: #0C0C0C; border: 1px solid rgba(201,168,76,0.4);
+  padding: 56px 48px; position: relative; overflow: hidden; margin-bottom: 32px;
+}
+.oferta-box::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold-d), var(--gold), var(--gold-l), var(--gold), var(--gold-d));
+}
+
+/* Urgência */
+.urgencia-bar {
+  background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25);
+  padding: 12px 20px; margin-bottom: 36px;
+  display: flex; align-items: center; gap: 10px; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--gold-l);
+  letter-spacing: 0.05em;
+}
+.urgencia-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold); animation: pulse-dot 1.4s infinite;
+}
+
+.oferta-pname {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+}
+.oferta-ptitle { font-family: var(--serif); font-size: 36px; margin-bottom: 6px; }
+.oferta-psub { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 36px; }
+
+.includes { display: flex; flex-direction: column; gap: 10px; text-align: left; margin-bottom: 36px; }
+.inc-item { display: flex; align-items: center; gap: 14px; font-size: 15px; color: var(--cream); }
+.chk {
+  width: 20px; height: 20px; min-width: 20px;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--gold);
+}
+
+.oferta-div { width: 100%; height: 1px; background: var(--border); margin: 32px 0; }
+
+.preco-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+}
+.preco-de {
+  font-size: 18px; color: var(--muted); text-decoration: line-through; margin-bottom: 4px;
+}
+.preco-por { font-family: var(--serif); font-size: 78px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 8px; }
+.preco-sub { font-size: 14px; color: var(--muted); margin-bottom: 36px; }
+.preco-parcel { font-size: 15px; color: var(--cream); margin-bottom: 36px; }
+.preco-parcel strong { color: var(--gold); }
+
+.oferta-garantia { font-size: 13px; color: var(--muted); margin-top: 18px; font-style: italic; }
+
+/* ══════════════════════════════════════
+   FAQ
+══════════════════════════════════════ */
+.section-faq { padding: 120px 24px; max-width: 780px; margin: 0 auto; }
+.faq-header { text-align: center; margin-bottom: 56px; }
+.faq-title { font-size: clamp(28px,3.5vw,42px); margin-bottom: 12px; }
+
+.faq-list { display: flex; flex-direction: column; gap: 2px; }
+.faq-item { border: 1px solid var(--border); background: var(--card); overflow: hidden; }
+.faq-btn {
+  width: 100%; background: none; border: none;
+  color: var(--white); font-family: var(--sans); font-size: 15px; font-weight: 500;
+  text-align: left; padding: 22px 26px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  transition: color 0.2s;
+}
+.faq-btn:hover { color: var(--gold); }
+.faq-icon {
+  width: 22px; height: 22px; min-width: 22px;
+  border: 1px solid var(--border); display: flex; align-items: center;
+  justify-content: center; font-size: 15px; color: var(--gold);
+  transition: transform 0.3s, background 0.3s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); background: rgba(201,168,76,0.1); }
+.faq-body {
+  max-height: 0; overflow: hidden;
+  font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300;
+  padding: 0 26px; transition: max-height 0.4s ease, padding 0.3s;
+}
+.faq-item.open .faq-body { max-height: 280px; padding: 0 26px 22px; }
+
+/* ══════════════════════════════════════
+   CTA FINAL
+══════════════════════════════════════ */
+.section-final {
+  padding: 140px 24px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.final-glow {
+  position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.final-inner { max-width: 740px; margin: 0 auto; position: relative; }
+.final-title { font-size: clamp(36px,5vw,64px); margin-bottom: 24px; }
+.final-sub {
+  font-size: 18px; color: var(--cream); font-weight: 300;
+  line-height: 1.7; margin-bottom: 52px;
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  padding: 48px 24px;
+  border-top: 1px solid var(--border); text-align: center;
+}
+.footer-brand {
+  font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.footer-copy { font-size: 13px; color: var(--muted); }
+
+/* Sticky */
+.sticky {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,10,0.96); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border);
+  padding: 14px 24px; z-index: 100;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 16px;
+  transform: translateY(100%); transition: transform 0.4s ease;
+}
+.sticky.show { transform: translateY(0); }
+.sticky-left { display: flex; flex-direction: column; }
+.sticky-name { font-family: var(--serif); font-size: 17px; color: var(--white); }
+.sticky-tag { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+.sticky-price { font-family: var(--serif); font-size: 22px; color: var(--gold); font-weight: 700; white-space: nowrap; }
+.sticky-btn {
+  background: var(--gold); color: var(--black);
+  font-family: var(--sans); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 14px 28px; border: none; cursor: pointer;
+  text-decoration: none; white-space: nowrap; transition: background 0.2s;
+}
+.sticky-btn:hover { background: var(--gold-l); }
+
+@media(max-width:540px){
+  .sticky-left { display: none; }
+  .preco-por { font-size: 56px; }
+  .oferta-box { padding: 36px 24px; }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(22px); }
+  to   { opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="ring r3"></div>
+  <div class="hero-glow"></div>
+
+  <div class="prevenda-badge">
+    <span class="badge-dot"></span>
+    Pré-venda · Vagas limitadas · R$897
+  </div>
+
+  <p class="hero-eyebrow">Programa de Mentoria Comportamental</p>
+
+  <h1 class="hero-title">
+    Neuro<span class="line2">LÍDER</span>
+  </h1>
+
+  <p class="hero-sub">
+    O programa que transforma seu comportamento como líder em resultado concreto no seu negócio — usando Neurociência, Economia Comportamental e Inteligência Emocional.
+  </p>
+
+  <p class="hero-tese">
+    "O lucro do seu negócio é reflexo direto do comportamento de quem lidera."
+  </p>
+
+  <div class="hero-cta">
+    <a href="#oferta" class="btn">
+      <span>Garantir minha vaga na pré-venda</span>
+      <span>→</span>
+    </a>
+    <span class="hero-price-hint">
+      Pré-venda por <strong>R$897</strong> · Valor sobe para R$1.997 no lançamento
+    </span>
+  </div>
+
+  <div class="hero-bottom-line"></div>
+</section>
+
+<!-- NÚMEROS -->
+<section class="section-numeros">
+  <div class="numeros-inner">
+    <div class="numero-item reveal">
+      <div class="numero-val">4</div>
+      <div class="numero-label">Pilares de transformação</div>
+    </div>
+    <div class="numero-item reveal d1">
+      <div class="numero-val">3</div>
+      <div class="numero-label">Ciências aplicadas</div>
+    </div>
+    <div class="numero-item reveal d2">
+      <div class="numero-val">48h</div>
+      <div class="numero-label">Para sentir a diferença</div>
+    </div>
+    <div class="numero-item reveal d3">
+      <div class="numero-val">∞</div>
+      <div class="numero-label">Impacto no seu negócio</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DOR -->
+<section class="section-dor">
+  <span class="label reveal">Você se reconhece aqui?</span>
+  <h2 class="reveal d1" style="font-size:clamp(34px,4.5vw,54px); margin-bottom:12px;">
+    Externamente parece que <em class="gold">está tudo bem.</em>
+  </h2>
+  <p class="reveal d2" style="font-size:18px; color:var(--cream); font-weight:300; max-width:640px;">
+    Internamente, você sente que algo está desorganizado — e isso começa a impactar sua equipe, seu crescimento e seu lucro.
+  </p>
+
+  <div class="dor-grid">
+    <div class="dor-card reveal">
+      <p class="dor-quote">Eu sei o que fazer. Mas na prática não executo como deveria.</p>
+      <span class="dor-tag">Desalinhamento comportamental</span>
+    </div>
+    <div class="dor-card reveal d1">
+      <p class="dor-quote">Vivo apagando incêndio. Se eu tirar a mão, tudo desmorona.</p>
+      <span class="dor-tag">Centralização e sobrecarga</span>
+    </div>
+    <div class="dor-card reveal d2">
+      <p class="dor-quote">Tomo decisões e depois fico em dúvida se fiz certo.</p>
+      <span class="dor-tag">Decisões inconsistentes</span>
+    </div>
+    <div class="dor-card reveal d1">
+      <p class="dor-quote">Minha equipe não performa — e não sei onde ajustar.</p>
+      <span class="dor-tag">Liderança desorganizada</span>
+    </div>
+    <div class="dor-card reveal d2">
+      <p class="dor-quote">Meu negócio cresceu. Mas sinto que não estou no mesmo nível.</p>
+      <span class="dor-tag">Insegurança silenciosa</span>
+    </div>
+    <div class="dor-card reveal d3">
+      <p class="dor-quote">Eu sei que o problema está em mim. Mas não sei como ajustar.</p>
+      <span class="dor-tag">Ponto cego de liderança</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ÂNCORA -->
+<section class="section-ancora">
+  <div class="ancora-glow"></div>
+  <span class="label reveal" style="position:relative;">A raiz do problema</span>
+  <h2 class="ancora-title reveal d1">
+    O problema não é técnico.<br>
+    É <em class="gold">comportamental.</em><br>
+    E comportamento pode ser ajustado.
+  </h2>
+  <p class="ancora-sub reveal d2">
+    Quando a liderança se organiza, o negócio responde.
+  </p>
+</section>
+
+<!-- O PROGRAMA -->
+<section class="section-programa">
+  <div class="programa-header">
+    <span class="label reveal">O método</span>
+    <h2 class="programa-title reveal d1">
+      O Método <em class="gold">C.L.A.R.O.</em>
+    </h2>
+    <p class="programa-sub reveal d2">
+      5 etapas estruturadas para levar você do caos interno à liderança organizada — com resultado visível no seu negócio.
+    </p>
+  </div>
+
+  <div class="pilares-grid">
+    <div class="pilar-card reveal">
+      <div class="pilar-letter">C</div>
+      <div class="pilar-num">Pilar 1</div>
+      <div class="pilar-name">Consciência</div>
+      <p class="pilar-desc">Você mapeia seus padrões e para de agir no piloto automático.</p>
+    </div>
+    <div class="pilar-card reveal d1">
+      <div class="pilar-letter">L</div>
+      <div class="pilar-num">Pilar 2</div>
+      <div class="pilar-name">Liberação</div>
+      <p class="pilar-desc">Desbloqueio dos gatilhos que travam suas decisões e postura.</p>
+    </div>
+    <div class="pilar-card reveal d2">
+      <div class="pilar-letter">A</div>
+      <div class="pilar-num">Pilar 3</div>
+      <div class="pilar-name">Ação</div>
+      <p class="pilar-desc">Ajuste do comportamento em decisões, comunicação e gestão.</p>
+    </div>
+    <div class="pilar-card reveal d3">
+      <div class="pilar-letter">R</div>
+      <div class="pilar-num">Pilar 4</div>
+      <div class="pilar-name">Resultado</div>
+      <p class="pilar-desc">Liderança estruturada — equipe alinhada, menos desgaste, mais lucro.</p>
+    </div>
+    <div class="pilar-card reveal d4">
+      <div class="pilar-letter">O</div>
+      <div class="pilar-num">Pilar 5</div>
+      <div class="pilar-name">Organização</div>
+      <p class="pilar-desc">Consolidação da sua identidade de liderança com clareza e direção.</p>
+    </div>
+  </div>
+
+  <!-- Formato -->
+  <span class="label reveal" style="text-align:center; display:block; margin-bottom:32px;">Como é entregue</span>
+  <div class="formato-grid">
+    <div class="formato-card reveal">
+      <div class="formato-icon">🎯</div>
+      <h3 class="formato-title">Mentorias em grupo ao vivo</h3>
+      <p class="formato-desc">Encontros ao vivo com Tatiane para trabalhar os pilares em profundidade, tirar dúvidas e aplicar em tempo real na sua realidade de liderança.</p>
+    </div>
+    <div class="formato-card reveal d1">
+      <div class="formato-icon">🎬</div>
+      <h3 class="formato-title">Conteúdo gravado</h3>
+      <p class="formato-desc">Aulas e materiais disponíveis para você acessar no seu ritmo — teoria, aplicação prática e exercícios de autoconhecimento comportamental.</p>
+    </div>
+    <div class="formato-card reveal d2">
+      <div class="formato-icon">🧠</div>
+      <h3 class="formato-title">Base científica aplicada</h3>
+      <p class="formato-desc">Neurociência, Economia Comportamental e Inteligência Emocional integradas de forma prática. Não é teoria — é transformação com fundamento.</p>
+    </div>
+    <div class="formato-card reveal d3">
+      <div class="formato-icon">📄</div>
+      <h3 class="formato-title">Materiais e diagnóstico</h3>
+      <p class="formato-desc">Ferramentas práticas, análise de temperamento e relatório personalizado para você entender quem é como líder — e para onde ir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="section-paraquem">
+  <div class="paraquem-inner">
+    <div class="paraquem-header">
+      <span class="label reveal">Para quem é</span>
+      <h2 class="paraquem-title reveal d1">Você se vê <em class="gold">aqui?</em></h2>
+    </div>
+    <div class="paraquem-grid">
+      <div class="avatar-card reveal">
+        <div class="avatar-num">01</div>
+        <h3 class="avatar-title">O empresário travado no comportamento</h3>
+        <p class="avatar-desc">Fatura bem, tem equipe, já investiu em estratégia. Mas vive apagando incêndio, centraliza e oscila emocionalmente. Sabe que algo nele está limitando.</p>
+        <p class="avatar-frase">"Ele sabe que o problema não é técnico. É comportamental."</p>
+      </div>
+      <div class="avatar-card reveal d1">
+        <div class="avatar-num">02</div>
+        <h3 class="avatar-title">O líder corporativo em ascensão</h3>
+        <p class="avatar-desc">Gerente, coordenador ou diretor sob alta cobrança. Quer crescer mas sente insegurança interna, dificuldade de se posicionar e medo de errar decisões.</p>
+        <p class="avatar-frase">"Eu preciso me posicionar melhor. Mas trave na hora."</p>
+      </div>
+      <div class="avatar-card reveal d2">
+        <div class="avatar-num">03</div>
+        <h3 class="avatar-title">O empresário que cresceu e perdeu o controle</h3>
+        <p class="avatar-desc">O negócio cresceu rápido, mais responsabilidade chegou. Mas sente desorganização interna, decisões impulsivas e desgaste emocional crescente.</p>
+        <p class="avatar-frase">"Meu negócio cresceu. Mas eu não acompanhei esse crescimento."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ILHA DO PARAÍSO -->
+<section class="section-ilha">
+  <div class="ilha-glow"></div>
+  <div class="ilha-inner">
+    <span class="label reveal">Onde você vai chegar</span>
+    <h2 class="ilha-title reveal d1">
+      Da <em class="gold">Ilha do Caos</em><br>à Ilha da Clareza.
+    </h2>
+    <p class="ilha-sub reveal d2">
+      Quando você passa pelo Método C.L.A.R.O., sua liderança se organiza — e o negócio responde.
+    </p>
+    <div class="resultados-grid reveal d2">
+      <div class="resultado-item">
+        <div class="resultado-check">✓</div>
+        <p class="resultado-text">Decisões tomadas com clareza e segurança interna</p>
+      </div>
+      <div class="resultado-item">
+        <div class="resultado-check">✓</div>
+        <p class="resultado-text">Equipe mais alinhada e engajada</p>
+      </div>
+      <div class="resultado-item">
+        <div class="resultado-check">✓</div>
+        <p class="resultado-text">Menos desgaste emocional no dia a dia</p>
+      </div>
+      <div class="resultado-item">
+        <div class="resultado-check">✓</div>
+        <p class="resultado-text">Delegação com confiança — sem precisar controlar tudo</p>
+      </div>
+      <div class="resultado-item">
+        <div class="resultado-check">✓</div>
+        <p class="resultado-text">Crescimento consistente — não por força de vontade, por sistema</p>
+      </div>
+      <div class="resultado-item">
+        <div class="resultado-check">✓</div>
+        <p class="resultado-text">Clareza de quem você é como líder — e para onde está indo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TATIANE -->
+<section class="section-tatiane">
+  <div class="tatiane-inner">
+    <div style="position:relative;" class="reveal">
+      <div class="tatiane-foto">
+        <div class="tatiane-initials">TV</div>
+        <div class="tatiane-foto-label">Adicione sua foto aqui</div>
+      </div>
+      <div class="corner"></div>
+    </div>
+    <div>
+      <span class="label reveal">Quem vai conduzir você</span>
+      <h2 class="tatiane-nome reveal d1">Tatiane Vernay</h2>
+      <div class="tatiane-cargo reveal d1">Mentora Comportamental · CEO TV Consultoria</div>
+      <p class="tatiane-bio reveal d2">
+        Com mais de 17 anos de experiência em gestão de pessoas, Tatiane é especialista em Análise de Temperamentos e Economia Comportamental aplicada à liderança. Sua abordagem integra neurociência, inteligência emocional e estratégia para transformar padrões individuais em performance coletiva.
+      </p>
+      <p class="tatiane-bio reveal d3">
+        Criadora do Método C.L.A.R.O. e do Diagnóstico NeuroLÍDER — ferramentas proprietárias que mapeiam o comportamento do líder e constroem o caminho do caos interno à clareza.
+      </p>
+      <div class="creds reveal d3">
+        <div class="cred">Analista de Temperamentos Humanos certificada</div>
+        <div class="cred">Especialista em Economia Comportamental</div>
+        <div class="cred">+17 anos em gestão de pessoas e liderança</div>
+        <div class="cred">Criadora do Método C.L.A.R.O. e V.E.R.</div>
+        <div class="cred">Atuação em gestão de projetos e processos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section class="section-oferta" id="oferta">
+  <div class="oferta-glow"></div>
+  <div class="oferta-inner">
+    <span class="label reveal">Pré-venda · Vagas limitadas</span>
+    <h2 class="oferta-title reveal d1">
+      O momento de entrar é <em class="gold">agora.</em>
+    </h2>
+    <p class="oferta-sub reveal d2">
+      Quem entra na pré-venda garante o menor preço que o NeuroLÍDER terá. Quando as vagas esgotarem, o programa abre no preço de lançamento.
+    </p>
+
+    <div class="oferta-box reveal d2">
+      <div class="urgencia-bar">
+        <span class="urgencia-dot"></span>
+        Pré-venda ativa · Vagas esgotando · Preço sobe no lançamento
+      </div>
+
+      <div class="oferta-pname">NeuroLÍDER · Programa de Mentoria Comportamental</div>
+      <div class="oferta-ptitle">Método C.L.A.R.O.</div>
+      <div class="oferta-psub">Do caos interno à liderança estruturada</div>
+
+      <div class="includes">
+        <div class="inc-item"><div class="chk">✓</div><span>Mentorias em grupo ao vivo com Tatiane Vernay</span></div>
+        <div class="inc-item"><div class="chk">✓</div><span>Conteúdo gravado com os 4 pilares do Método C.L.A.R.O.</span></div>
+        <div class="inc-item"><div class="chk">✓</div><span>Análise de temperamento personalizada</span></div>
+        <div class="inc-item"><div class="chk">✓</div><span>Relatório comportamental individual em PDF</span></div>
+        <div class="inc-item"><div class="chk">✓</div><span>Materiais e ferramentas práticas de liderança</span></div>
+        <div class="inc-item"><div class="chk">✓</div><span>Acesso ao grupo exclusivo de alunos NeuroLÍDER</span></div>
+      </div>
+
+      <div class="oferta-div"></div>
+
+      <div class="preco-label">Investimento pré-venda</div>
+      <div class="preco-de">De R$1.997</div>
+      <div class="preco-por">R$897</div>
+      <div class="preco-sub">Pagamento único à vista</div>
+      <div class="preco-parcel">ou <strong>12x de R$75</strong> no cartão</div>
+
+      <a href="#" class="btn btn-full">
+        <span>Garantir minha vaga na pré-venda</span>
+        <span>→</span>
+      </a>
+
+      <div class="oferta-garantia">
+        Vagas limitadas · Preço de pré-venda por tempo limitado<br>
+        Após esgotar, o programa abre por R$1.997
+      </div>
+    </div>
+
+    <p class="reveal" style="font-size:14px; color:var(--muted); font-style:italic;">
+      "Liderança não é cargo. É comportamento.<br>
+      E comportamento pode — e precisa — ser estruturado."
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-faq">
+  <div class="faq-header">
+    <span class="label reveal">Dúvidas</span>
+    <h2 class="faq-title reveal d1">Perguntas frequentes</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <button class="faq-btn"><span>O que é o Método C.L.A.R.O.?</span><div class="faq-icon">+</div></button>
+      <div class="faq-body">É a metodologia proprietária do NeuroLÍDER, estruturada em 5 pilares: Consciência, Liberação, Ação, Resultado e Organização. Cada pilar trabalha um aspecto do comportamento de liderança — do mapeamento dos padrões até a consolidação da identidade do líder.</div>
+    </div>
+    <div class="faq-item reveal d1">
+      <button class="faq-btn"><span>Como funcionam as mentorias ao vivo?</span><div class="faq-icon">+</div></button>
+      <div class="faq-body">São encontros em grupo online com Tatiane Vernay, onde você aprofunda os conteúdos, tira dúvidas e aplica os aprendizados na sua realidade. O formato em grupo potencializa o aprendizado — você aprende com sua própria jornada e com a dos outros.</div>
+    </div>
+    <div class="faq-item reveal d2">
+      <button class="faq-btn"><span>Qual a diferença entre o Diagnóstico e o programa NeuroLÍDER?</span><div class="faq-icon">+</div></button>
+      <div class="faq-body">O Diagnóstico NeuroLÍDER é o produto de entrada — mapeia quem você é como líder em 48h. O programa NeuroLÍDER é o processo completo de transformação comportamental ao longo do tempo, trabalhando os 4 pilares em profundidade.</div>
+    </div>
+    <div class="faq-item reveal d1">
+      <button class="faq-btn"><span>Por que entrar agora na pré-venda?</span><div class="faq-icon">+</div></button>
+      <div class="faq-body">Quem entra na pré-venda garante o menor preço do NeuroLÍDER — R$897 contra R$1.997 no lançamento oficial. As vagas são limitadas e não há garantia de que o preço de pré-venda será oferecido novamente.</div>
+    </div>
+    <div class="faq-item reveal d2">
+      <button class="faq-btn"><span>Quando o programa começa?</span><div class="faq-icon">+</div></button>
+      <div class="faq-body">A data de início será comunicada aos alunos da pré-venda com antecedência. Ao garantir sua vaga agora, você já recebe acesso ao conteúdo introdutório e à comunidade de alunos.</div>
+    </div>
+    <div class="faq-item reveal d3">
+      <button class="faq-btn"><span>Para quem NÃO é o NeuroLÍDER?</span><div class="faq-icon">+</div></button>
+      <div class="faq-body">O NeuroLÍDER não é para quem busca uma solução rápida sem comprometimento. O processo exige presença, honestidade e abertura para se ver. Se você não está disposto a olhar para dentro, este programa não vai funcionar para você.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="section-final">
+  <div class="final-glow"></div>
+  <div class="final-inner">
+    <span class="label reveal">Sua decisão</span>
+    <h2 class="final-title reveal d1">
+      Quando a liderança<br>se organiza,<br>
+      <em class="gold">o negócio responde.</em>
+    </h2>
+    <p class="final-sub reveal d2">
+      Você pode continuar apagando incêndio, oscilando nas decisões e sentindo que o negócio poderia estar muito mais avançado. Ou pode estruturar sua liderança — e mudar o que ela gera.
+    </p>
+    <div class="reveal d3" style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+      <a href="#oferta" class="btn">
+        <span>Quero entrar na pré-venda · R$897</span>
+        <span>→</span>
+      </a>
+      <span style="font-size:13px; color:var(--muted);">Vagas limitadas · Preço sobe para R$1.997 no lançamento</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">NeuroLÍDER · TV Consultoria · Tatiane Vernay</div>
+  <div class="footer-copy">© 2025 Tatiane Vernay · Todos os direitos reservados</div>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sticky" id="sticky">
+  <div class="sticky-left">
+    <span class="sticky-name">NeuroLÍDER</span>
+    <span class="sticky-tag">Pré-venda · Vagas limitadas</span>
+  </div>
+  <span class="sticky-price">R$897</span>
+  <a href="#oferta" class="sticky-btn">Garantir vaga →</a>
+</div>
+
+<script>
+  // Reveal
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => obs.observe(el));
+
+  // FAQ
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if(!open) item.classList.add('open');
+    });
+  });
+
+  // Sticky
+  const sticky = document.getElementById('sticky');
+  const hero = document.querySelector('.hero');
+  window.addEventListener('scroll', () => {
+    sticky.classList.toggle('show', hero.getBoundingClientRect().bottom < 0);
+  });
+</script>
+</body>
+</html>
